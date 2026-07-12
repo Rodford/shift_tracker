@@ -1,9 +1,29 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+puts "Cleaning out the old data..."
+Task.destroy_all
+Shift.destroy_all
+User.destroy_all
+
+puts "Creating a test user..."
+test_user = User.create!(
+  email: "admin@test.com",
+  username: "AdminUser",
+  password: "password123",
+  password_confirmation: "password123"
+)
+
+puts "Creating some historic shifts and tasks..."
+# Create 3 fake shifts in the past
+3.times do |i|
+  shift = test_user.shifts.create!(
+    date: Date.today - i.days,
+    shift_type: ["Morning", "Mid-Day", "Night"].sample,
+    notes: "A standard shift. Everything went smoothly."
+  )
+
+  # Add a couple of tasks to each shift
+  shift.tasks.create!(description: "Sanitize all countertops", is_completed: true, completed_at: Time.now)
+  shift.tasks.create!(description: "Count the register till", is_completed: false)
+end
+
+puts "All done! The database is seeded."
+puts "You can now log in with Email: admin@test.com | Password: password123"

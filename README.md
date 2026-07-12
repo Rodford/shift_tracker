@@ -1,24 +1,32 @@
-# README
+\--ShiftTracker Pro
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
 
-* Ruby version
 
-* System dependencies
 
-* Configuration
+\--ShiftTracker Pro is a web application designed to replace manual paper workplace checklists. It provides a secure, multi-user digital tracking system for logging shifts and managing operational "Go-By" tasks.
 
-* Database creation
 
-* Database initialization
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+\--Features
 
-* ...
+Secure Authentication: User accounts managed and encrypted.
+
+Relational Database Design: Links Users to Shifts, and Shifts to Tasks.
+
+Modern UI: Clean, responsive interface.
+
+
+
+
+
+\--Tech Stack
+
+Ruby on Rails 7
+
+SQLite Database
+
+Hotwire / Turbo
+
