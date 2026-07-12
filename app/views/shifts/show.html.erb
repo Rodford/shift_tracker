@@ -1,0 +1,53 @@
+<div style="max-width: 800px; margin: 0 auto; font-family: sans-serif;">
+  <%= link_to "← Back to All Shifts", root_path, style: "text-decoration: none; color: blue;" %>
+  
+  <h1 style="margin-bottom: 5px;"><%= @shift.date.to_fs(:long_ordinal) %> - <%= @shift.shift_type %></h1>
+  <p style="color: gray; margin-top: 0;">Logged by: <%= @shift.user.username %></p>
+
+  <% if @shift.notes.present? %>
+    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+      <strong>Notes:</strong> <%= @shift.notes %>
+    </div>
+  <% end %>
+
+  <hr>
+
+  <h2>Go-By Tasks</h2>
+  
+  <ul style="list-style-type: none; padding: 0;">
+    <% @shift.tasks.each do |task| %>
+      <% if task.persisted? %>
+        <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px;">
+          
+          <%= link_to toggle_shift_task_path(@shift, task), data: { turbo_method: :patch }, style: "text-decoration: none; font-size: 1.5em; cursor: pointer; color: #007bff; user-select: none;" do %>
+            <%= task.is_completed ? "☑" : "☐" %>
+          <% end %>
+          
+          <span style="<%= 'text-decoration: line-through; color: gray;' if task.is_completed %>">
+            <%= task.description %>
+          </span>
+          
+          <% if task.is_completed && task.completed_at %>
+            <small style="color: gray;">
+              (Done: <%= task.completed_at.strftime("%I:%M %p") %>)
+            </small>
+          <% end %>
+
+          <div style="margin-left: auto;">
+            <%= link_to "Delete", shift_task_path(@shift, task), data: { turbo_method: :delete, turbo_confirm: "Delete this task?" }, style: "color: #dc3545; text-decoration: none; font-size: 0.85em;" %>
+          </div>
+
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+
+  <div style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+    <h3>Add a Task</h3>
+    
+    <%= form_with model: [@shift, @task] do |form| %>
+      <%= form.text_field :description, placeholder: "e.g., Clean the espresso machine", style: "padding: 8px; width: 60%;" %>
+      <%= form.submit "Add Task", style: "padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer;" %>
+    <% end %>
+  </div>
+</div>

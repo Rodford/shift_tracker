@@ -1,0 +1,25 @@
+<div style="max-width: 600px; margin: 0 auto; font-family: sans-serif;">
+  <h2>Log a New Shift</h2>
+
+  <%= form_with model: @shift do |form| %>
+    <div style="margin-bottom: 15px;">
+      <%= form.label :date, style: "display: block;" %>
+      <%= form.date_field :date %>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :shift_type, "Type (e.g., Morning, Night)", style: "display: block;" %>
+      <%= form.text_field :shift_type %>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :notes, style: "display: block;" %>
+      <%= form.text_area :notes, rows: 4, style: "width: 100%;" %>
+    </div>
+
+    <div>
+      <%= form.submit "Save Shift" %>
+      <%= link_to "Cancel", root_path, style: "margin-left: 10px;" %>
+    </div>
+  <% end %>
+</div>
