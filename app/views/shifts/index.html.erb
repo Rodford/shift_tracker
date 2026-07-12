@@ -1,36 +1,38 @@
-<div style="max-width: 800px; margin: 0 auto; font-family: sans-serif;">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h1>My Shift Tracker</h1>
-    <%= link_to "Log a New Shift", new_shift_path, style: "background: blue; color: white; padding: 10px; text-decoration: none; border-radius: 5px;" %> 
-    
-    <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
-  </div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+  <h1 style="margin: 0;">Recent Shifts</h1>
+  <%= link_to "Log a New Shift", new_shift_path, class: "btn" %>
+</div>
 
-  <hr>
-
-  <h2>Recent Shifts</h2>
-  
-  <% if @shifts.any? %>
-    <ul>
-      <% @shifts.each do |shift| %>
-        <li style="margin-bottom: 15px;">
-          <strong><%= link_to shift.date.to_fs(:long_ordinal), shift_path(shift) %>:</strong> 
-          (Logged by: <%= shift.user.username || shift.user.email.split('@').first %>)
+<% if @shifts.any? %>
+  <% @shifts.each do |shift| %>
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        
+        <div>
+          <h3 style="margin: 0 0 5px 0;">
+            <%= link_to shift.date.to_fs(:long_ordinal), shift_path(shift), style: "text-decoration: none; color: var(--primary);" %> 
+            <span style="color: var(--text-light); font-size: 0.8em; font-weight: normal;">(<%= shift.shift_type %>)</span>
+          </h3>
+          <p style="margin: 0; color: var(--text-light); font-size: 0.9em;">
+            Logged by: <%= shift.user.username || shift.user.email.split('@').first %>
+          </p>
           
           <% if shift.notes.present? %>
-            <br>
-            <span style="color: gray; font-size: 0.9em;">
-              Notes: <%= shift.notes %>
-            </span>
+            <p style="margin: 10px 0 0 0; font-size: 0.95em;">
+              <strong>Notes:</strong> <%= shift.notes %>
+            </p>
           <% end %>
+        </div>
 
-          <div style="margin-top: 5px;">
-            <%= link_to "Delete Shift", shift_path(shift), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this shift?" }, style: "color: white; background-color: #dc3545; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 0.8em; text-decoration: none; display: inline-block;" %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>No shifts logged yet!</p>
+        <div>
+          <%= link_to "Delete", shift_path(shift), data: { turbo_method: :delete, turbo_confirm: "Delete this shift?" }, class: "btn btn-danger" %>
+        </div>
+
+      </div>
+    </div>
   <% end %>
-</div>
+<% else %>
+  <div class="card" style="text-align: center; color: var(--text-light);">
+    <p>No shifts logged yet! Click the button above to get started.</p>
+  </div>
+<% end %>
